@@ -28,7 +28,7 @@ try {
 
 #Startup Kubernetes Dashboard
 if (!(netstat -ano | findstr ' 127.0.0.1:8001 ')) {
-	#Start Kubectl Proxy At Backgound
+	#Start Kubectl Proxy As Backgound Daemon
 	Start-Job -Name KubectlProxy -Scriptblock {
 		Start-process kubectl -ArgumentList "proxy --address=127.0.0.1 --port=8001" -NoNewWindow
 	}
