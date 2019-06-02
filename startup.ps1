@@ -28,13 +28,11 @@ try {
 
 #Startup Kubernetes Dashboard
 if (!(netstat -ano | findstr ' 127.0.0.1:8001 ')) {
-	if (Get-Job -Name kubectlproxy -ErrorAction "SilentlyContinue") {
-		Stop-Job -Name kubectlproxy -ErrorAction "SilentlyContinue"
-		Remove-Job -Name kubectlproxy -ErrorAction "SilentlyContinue"
+	#Start Kubectl Proxy At Backgound
+	Start-Job -Name KubectlProxy -Scriptblock {
+		Start-process kubectl -ArgumentList "proxy --address=127.0.0.1 --port=8001" -NoNewWindow
 	}
-	Start-Job -Name kubectlproxy -ScriptBlock {
-		kubectl proxy --address='127.0.0.1' --port=8001
-	}
+	
 	#Set Credentials For Kubernetes Client
 	$TOKEN=((kubectl -n kube-system describe secret default | Select-String "token:") -split " +")[1]
 	kubectl config set-credentials docker-for-desktop --token="${TOKEN}"
