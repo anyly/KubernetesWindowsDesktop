@@ -1,0 +1,8 @@
+{
+  "registry-mirrors": [
+    "https://registry.docker-cn.com"
+  ],
+  "insecure-registries": [],
+  "debug": true,
+  "experimental": true
+}
